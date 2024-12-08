@@ -19,7 +19,7 @@ class AppVM @Inject constructor(
 
     private val _appDataState = MutableStateFlow<Result<MedicineResponse>>(Result.Loading())
     val appDataState: StateFlow<Result<MedicineResponse>> = _appDataState.asStateFlow()
-    
+
     init {
         getData()
     }
