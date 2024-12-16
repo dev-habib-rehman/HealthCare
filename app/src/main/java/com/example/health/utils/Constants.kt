@@ -2,12 +2,19 @@ package com.example.health.utils
 
 object Constants {
 
+    object ApiError {
+        const val API_NO_BODY = "Response body is null"
+    }
+
     object ApiEndpoints {
-        const val MOCKY_ENDPOINT = "v3/85b65ddf-b237-4b65-8a31-e9a8586ba746"
+        const val MOCKY_ENDPOINT = "v3/cd4291d3-1ff3-4a38-8fe2-dbf36008ca27"
     }
 
     object Database {
         const val DB_NAME = "App_database"
+        const val DB_CORRUPTED_DATA = "Corrupted data in database"
+        const val DB_ERROR = "Unknown database error occurred."
+        const val DB_NO_DATA = "No data found in the database."
     }
 
     object ArgsName {
@@ -30,4 +37,5 @@ object Constants {
     object Entities {
         const val TABLE_NAME = "medicine_table"
     }
+
 }

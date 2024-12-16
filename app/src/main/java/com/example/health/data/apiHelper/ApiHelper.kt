@@ -1,5 +1,6 @@
 package com.example.health.data.apiHelper
 
+import com.example.health.utils.Constants
 import com.google.gson.JsonParseException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -34,7 +35,10 @@ open class ApiHelper {
 
     private fun <T> getResult(response: Response<T>): Flow<Result<T>> {
         return flow {
-            if (response.isSuccessful && response.body() != null) {
+            if (response.body() == null)
+                emit(Result.Failure(Constants.ApiError.API_NO_BODY, null, response.code(), response.errorBody()))
+
+            if (response.isSuccessful) {
                 emit(Result.Success(response.body(), responseCode = response.code()))
             } else {
                 emit(

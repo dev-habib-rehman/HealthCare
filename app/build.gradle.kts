@@ -68,7 +68,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
+    androidTestImplementation( "androidx.test:core:1.5.0")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -81,6 +83,7 @@ dependencies {
     testImplementation(libs.org.jetbrains.kotlinx.test)
     testImplementation(libs.dagger.hilt.android.testing)
     testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.app.cash.turbine)
 
     //navigation
     implementation(libs.androidx.navigation.fragemnt)

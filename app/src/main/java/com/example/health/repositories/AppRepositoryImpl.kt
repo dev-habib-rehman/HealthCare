@@ -7,6 +7,7 @@ import com.example.health.data.local.entities.toDomain
 import com.example.health.data.remote.apiService.NetworkService
 import com.example.health.data.remote.models.MedicineResponse
 import com.example.health.data.remote.models.toEntities
+import com.example.health.utils.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -18,7 +19,7 @@ class AppRepositoryImpl @Inject constructor(
 
     override suspend fun getData(): Flow<Result<MedicineResponse>> = flow {
         val localData = getDataFromDatabase()
-        if (localData != null) {
+        if (localData != null && localData is Result.Success) {
             emit(localData)
             return@flow
         }
@@ -36,13 +37,29 @@ class AppRepositoryImpl @Inject constructor(
         serviceCall { remoteDataSource.getMedicineDose() }.first()
 
     override suspend fun getDataFromDatabase(): Result<MedicineResponse>? {
-        val localData = localDataSource.getAllMedicine()
-        return if (localData.isEmpty().not()) {
-            Result.Success(
-                data = MedicineResponse(medicines = localData.map { it.toDomain() }),
-                responseCode = 200
+        return try {
+            val localData = localDataSource.getAllMedicine()
+
+            if (localData.isNotEmpty()) {
+                // Check for corrupted data (e.g., empty fields in the medicine data)
+                val validData = localData.filter {
+                    it.name.isNullOrBlank().not() && it.dose.isNullOrBlank()
+                        .not() && it.strength.isNullOrBlank().not()
+                }
+                if (validData.isEmpty()) {
+                    Result.Failure(
+                        message = Constants.Database.DB_CORRUPTED_DATA, errorCode = 400
+                    )
+                } else Result.Success(
+                    data = MedicineResponse(medicines = localData.map { it.toDomain() }),
+                    responseCode = 200
+                )
+            } else Result.Failure(message = Constants.Database.DB_NO_DATA, errorCode = 404)
+        } catch (exception: Exception) {
+            Result.Failure(
+                message = exception.message ?: Constants.Database.DB_ERROR, errorCode = 500
             )
-        } else null // No local data found
+        }
     }
 
     override suspend fun insertData(remoteResult: MedicineResponse): Result<MedicineResponse> {

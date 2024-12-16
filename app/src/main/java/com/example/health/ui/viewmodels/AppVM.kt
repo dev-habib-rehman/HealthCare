@@ -25,6 +25,7 @@ class AppVM @Inject constructor(
     }
 
     fun getData() {
+        _appDataState.value = Result.Loading()
         viewModelScope.launch {
             appRepository.getData().collect {
                 _appDataState.value = it
