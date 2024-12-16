@@ -37,7 +37,7 @@ View the greeting message and the list of medicines.
 Tap on a medicine card to view its details.
 
 **API Details**
-https://run.mocky.io/v3/85b65ddf-b237-4b65-8a31-e9a8586ba746
+https://run.mocky.io/v3/cd4291d3-1ff3-4a38-8fe2-dbf36008ca27
 The app uses a mock API hosted on Mocky.io to fetch medicine data. Below is the JSON structure:
 
 {
@@ -51,5 +51,17 @@ The app uses a mock API hosted on Mocky.io to fetch medicine data. Below is the 
 ... (additional entries)
 ]
 }
+
+-**Unit Testing**
+- clone the project navigate to test directory run the classes
+- I have added multiple test cases for AppRepository to test communication data.
+- I have added multiple test cases for UI layer ViewModel to test the data flow.
+- By testing above two major classes almost other main classes also get tested.
+
+-**Instrument Testing**
+- Added Instrument for testing database operations like insert and retrieve. 
+- setup the project along with emulator or real device. 
+- got the AndroidTest directory and run the AppDaoTest Class. 
+
 
 Feel free to reach out for questions or issues. Enjoy exploring the app!
